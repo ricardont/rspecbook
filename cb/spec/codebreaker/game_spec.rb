@@ -1,20 +1,45 @@
 require 'spec_helper'
 module Codebreaker
 	describe Game do
+		let(:output) { double('output').as_null_object }
+		let(:game) { Game.new(output) }
 		describe 'starts' do
-			let(:output) { double('output').as_null_object }
-			let(:game) { Game.new(output) }
 			it 'sends a welcome message' do
-				allow(output).to receive(:puts).and_return("Welcome to Codebreaker!")
-				#output.should_receive(:puts).with('Welcome to Codebreaker!')
-				game.start
+				output.should_receive(:puts).with('Welcome to Codebreaker!')
+				#allow(output).to receive(:puts).with('Welcome to Codebreaker!')
+				#allow(output).to receive(:puts).and	_return("Welcome to Codebreaker!")
+				game.start('1234')
 			end
 			it 'prompts for the first guess' do			
-				allow(output).to receive(:puts).and_return("Enter guess:")
-				#output.should_receive(:puts).with('Enter guess:')
-				game.start
+				output.should_receive(:puts).with('Enter guess:')
+				#allow(output).to receive(:puts).with("Enter guess:")
+				game.start('1234')
 			end
 		end		
+		describe "#guess" do
+			context "with no matches" do
+				it "sends a mark with ''" do
+					game.start('1234')
+					allow(output).to receive(:puts).with('')
+					#expect(output.puts).to eq('')
+					game.guess('5555')
+				end
+			end
+			context "with 1 number math" do
+				it "send mark with '-'"  do
+					game.start('1234')
+					allow(output).to receive(:puts).with('-')
+					game.guess('2555')	
+				end
+			end
+			context "with 1 exact match" do
+				it "sends a mark with '+'" do
+					game.start('1234')
+					output.should_receive(:puts).with('+')
+					game.guess('1555')
+				end
+			end
+		end
 	end
 end
 
