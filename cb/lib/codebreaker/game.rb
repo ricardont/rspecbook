@@ -1,3 +1,4 @@
+#good
 module Codebreaker
 	class Game
 		def initialize(output)
@@ -9,21 +10,27 @@ module Codebreaker
 			@output.puts 'Enter guess:'
 		end
 		def guess(guess)
-			if exact_match?(guess, 0)
-				mark = '+'
-			elsif number_match?(guess, 0)
-				mark = '-'
-			else 
-				mark = ''
-			end				
-			@output.puts mark
+			@output.puts find_matches(guess)
 		end
 		private
+		def find_matches(guess)
+			mark=''
+		  guess.chars.map.with_index { |s, i|
+		  	if exact_match?(guess, i)
+					mark << '+'
+				elsif number_match?(guess, s)	
+					mark << '-'
+				else 
+					mark << ''
+				end
+		  }				
+		  return mark
+		end
 	  def exact_match?(guess, index)		
 			guess[index] == @secret[index]
 		end
-		def number_match?(gesss, index)
-			@secret.include?(guess[index])
+		def number_match?(guess, string)		
+			@secret.include?(string)
 		end
 	end
 end
