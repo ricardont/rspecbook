@@ -13,7 +13,7 @@ Given("I am not yet playing") do
 end
 When("I start a new game") do
 	game=Codebreaker::Game.new(o_output)
-	game.start()
+	game.start('1234')
 end
 Then("I should see {string}") do |string|
 	o_output.messages.should include(string)
@@ -29,7 +29,7 @@ When("I guess {string}") do |guess|
 end
  
 Then("the mark should be {string}") do |string|
-	o_output.message.should include(string)
+	o_output.messages.should include(string)
 end
 
 
